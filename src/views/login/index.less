@@ -1,14 +1,16 @@
 .login {
   position: relative;
   height: 100vh;
-  background-image: url(~@/assets/img/system/login-back1.png);
+  background-image: url(~@/assets/img/system/login-back1366.png);
+  background-repeat: no-repeat;
+  background-color: #51C4C9;
   background-size: 100% 100%;
   min-width: 1366px;
   min-height: 625px;
 }
 
 .login-content {
-  padding-top: 50px;
+  // padding-top: 50px;
 
   .left-pic {
     padding-top: 11px;
@@ -16,13 +18,13 @@
 
   .login-wrap {
     position: absolute;
-    top: 90px;
+    top: calc(50% - 225px);
     right: 50px;
     // margin-left: 62px;
 
     .title {
       display: flex;
-      justify-content: center;
+      justify-content: left;
       align-items: center;
       margin-bottom: 25px;
     }

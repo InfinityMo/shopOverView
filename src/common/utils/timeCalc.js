@@ -4,7 +4,7 @@ import { dateFormat } from './funcStore'
 export function getYesterday () {
   var dayYesterDay = new Date()
   dayYesterDay.setTime(dayYesterDay.getTime() - 24 * 60 * 60 * 1000)
-  var yesterDay = dayYesterDay.getFullYear() + '-' + (dayYesterDay.getMonth() + 1) + '-' + dayYesterDay.getDate()
+  var yesterDay = dayYesterDay.getFullYear() + '-' + ((dayYesterDay.getMonth() + 1) < 10 ? '0' + (dayYesterDay.getMonth() + 1) : (dayYesterDay.getMonth() + 1)) + '-' + (dayYesterDay.getDate() < 10 ? '0' + dayYesterDay.getDate() : dayYesterDay.getDate())
   return yesterDay
 }
 // 最近30天
@@ -43,16 +43,16 @@ export function getLastSevenDay () {
   var month = now.getMonth() + 1
   var day = now.getDate()
   var dateObj = {}
-  dateObj.now = year + '-' + month + '-' + day
+  dateObj.now = year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day)
   if (day - 7 <= 0) { // 如果在当月7日之前
     var lastMonthDay = new Date(year, (parseInt(month) - 1), 0).getDate() // 1周前所在月的总天数
     if (month - 1 <= 0) { // 如果在当年的1月份
-      dateObj.last = (year - 1) + '-' + 12 + '-' + (31 - (6 - day))
+      dateObj.last = (year - 1) + '-' + 12 + '-' + ((31 - (6 - day)) < 10 ? '0' + (31 - (6 - day)) : (31 - (6 - day)))
     } else {
-      dateObj.last = year + '-' + (month - 1) + '-' + (lastMonthDay - (6 - day))
+      dateObj.last = year + '-' + ((month - 1) < 10 ? '0' + (month - 1) : (month - 1)) + '-' + ((lastMonthDay - (6 - day)) < 10 ? '0' + (lastMonthDay - (6 - day)) : (lastMonthDay - (6 - day)))
     }
   } else {
-    dateObj.last = year + '-' + month + '-' + (day - 6)
+    dateObj.last = year + '-' + (month < 10 ? '0' + month : month) + '-' + ((day - 6) < 10 ? '0' + (day - 6) : (day - 6))
   }
   return [dateObj.last, dateObj.now]
 }

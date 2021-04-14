@@ -5,6 +5,8 @@
         <h4>店铺信息总览</h4>
         <!-- 用户信息 -->
         <div class="flex-item-center user">
+          <p class="journal"
+             @click="viewJournal">查看操作日志</p>
           <el-popover placement="bottom"
                       trigger="click"
                       popper-class="user-popover">
@@ -127,16 +129,6 @@ export default {
         dataKey: 'event',
         title: '操作',
         align: 'left'
-      }, {
-        dataKey: 'old',
-        title: '操作前数据',
-        align: 'left',
-        width: 120
-      }, {
-        dataKey: 'new',
-        title: '操作后数据',
-        align: 'left',
-        width: 120
       }],
       tableData: [],
       editForm: {

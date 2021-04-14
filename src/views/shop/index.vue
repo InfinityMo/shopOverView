@@ -26,6 +26,8 @@
                     v-show="searchForm.shop==='-1'">
               <el-form-item label="日期选择：">
                 <el-date-picker v-model="searchForm.date"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd"
                                 :editable="false"
                                 :clearable="false"
                                 :picker-options="pickerOptionsNow"
@@ -63,17 +65,20 @@
         <div class="table-wrap"
              ref="table">
           <div class="flex-between-center table-info">
-            <!-- <div class="flex-item-center">
-              <p class="select-tip"
-                 v-show="timeTypeSelect!==''||shopSelect!==''"><span>{{timeTypeSelect}}</span><em v-show="timeTypeSelect!==''&&shopSelect!==''">，</em><span>{{shopSelect}}</span></p>
-            </div> -->
+            <div class="flex-item-center">
+              <p class="select-tip">
+                <span>{{shopName}}—</span>
+                <span>{{timeSelect}}</span>
+                <span>{{tipDataName}}</span>
+              </p>
+            </div>
             <div class="btn-gather">
               <el-button type="primary"
                          @click="downTable"><i class="export-icon"></i>下载报表</el-button>
             </div>
           </div>
           <standard-table :dataSource="tableData"
-                          :columns="columnAllShop"
+                          :columns="columns"
                           :hidePagination="true" />
         </div>
       </div>
@@ -84,67 +89,48 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import tableMixin from '@/mixins/dealTable'
-import { getYesterday, getLastSevenDay, monthSpliceDay } from '@/common/utils/timeCalc'
-import { scrollTo } from '@/common/utils/funcStore'
+import { getYesterday, getLastSevenDay } from '@/common/utils/timeCalc'
 import watermark from '@/common/utils/watermark'
-
 // import {getLastSevenDay} from '@/common/utils/timeCalc.js'
 import { searchForm, shopOption } from './formData'
 import StandardTable from '@/common/components/standardTable.vue'
-import { columnsAllShopsData, tableData } from './columnsData.js'
+import { columnsAllShopsData, columnsSingleShopsData, tableData } from './columnsData.js'
 export default {
   mixins: [tableMixin],
   components: {
     StandardTable
-    // Table
-
   },
   data () {
     return {
       searchForm: JSON.parse(JSON.stringify(searchForm)),
       shopOption: shopOption,
-      columnAllShop: columnsAllShopsData(this.$createElement, this),
+      columns: [],
       // columnAllShop: columnsSingleShopsData(this.$createElement, this),
-      tableData: tableData
+      tableData: tableData,
+      shopName: '',
+      timeSelect: '',
+      tipDataName: ''
     }
   },
   watch: {
-    'searchForm.shop': {
-      deep: true,
-      handler: function (newVal, oldVal) {
-        this.SAVESHOPID(newVal)
-      }
-    }
+    // 'searchForm.shop': {
+    //   deep: true,
+    //   handler: function (newVal, oldVal) {
+    //     this.SAVESHOPID(newVal)
+    //   }
+    // }
   },
   computed: {
     ...mapGetters({
       userData: 'getUserData'
     })
-    // userPowerArr () {
-    //   let userPowerArray = []
-    //   Object.keys(this.userPower).map(i => {
-    //     userPowerArray = this.userPower[i]
-    //   })
-    //   // userPowerArray = [2, 3, 4]
-    //   return userPowerArray
-    // }
-    // searchBtnAbled () {
-    //   let isAbled = true
-    //   const judgeForm = {
-    //     timeType: String(this.searchForm.timeType),
-    //     time: this.searchForm.timeType === 3 ? this.searchForm.month : this.timeSection || [], // 日期
-    //     shop: String(this.searchForm.shop),
-    //     dataType: this.searchForm.dataType
-    //   }
-    //   isAbled = Object.keys(judgeForm).every(item => {
-    //     return judgeForm[item].length > 0
-    //   })
-    //   return !isAbled
-    // }
+
   },
   created () {
+    this.columns = columnsAllShopsData(this.$createElement, this)
     this.searchForm.shop = '-1'
     this.searchForm.date = getYesterday()
+    this.setTable()
   },
   mounted () {
     // 创建水印
@@ -182,45 +168,26 @@ export default {
       })
     },
     searchHandle () {
-      this.submitForm = { ...this.searchForm }
-    },
-    tableRender (flag) {
-      this.$nextTick(() => {
-        this.$store.commit('SETSPINNING', false)
-        if (flag) {
-          setTimeout(() => {
-            // const top = document.body.scrollTop || document.documentElement.scrollTop
-            scrollTo(screen.height < 1080 ? 140 : 120)
-          }, 500)
-        }
-      })
-    },
-    remoteMethod (query) {
-      if (query !== '') {
-        this.linkSearchOption = this.restaurants.filter(item => {
-          return (item.label.toLowerCase().indexOf(query.toLowerCase()) >= 0) || item.value.toLowerCase().indexOf(query.toLowerCase()) >= 0
-        })
-      } else {
-        this.linkSearchOption = []
-      }
+      this.setTable()
+      // this.submitForm = { ...this.searchForm }
     },
     shopChange (value) {
       this.searchForm.date = getYesterday()
-      // this.searchForm.date = ''
       this.searchForm.dateTime = getLastSevenDay()
     },
-    // querySearch (queryString, cb) {
-    //   const restaurants = this.restaurants
-    //   const results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-    //   debugger
-    //   // 调用 callback 返回建议列表的数据
-    //   cb(results[0].la)
-    // },
-    // createFilter (queryString) {
-    //   return (restaurant) => {
-    //     return (restaurant.label.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-    //   }
-    // },
+    setTable () {
+      this.columns = []
+      this.shopName = this.shopOption.filter(item => item.value === this.searchForm.shop)[0].label || ''
+      if (this.searchForm.shop === '-1') {
+        this.columns = columnsAllShopsData(this.$createElement, this)
+        this.timeSelect = this.searchForm.date
+        this.tipDataName = '数据'
+      } else {
+        this.columns = columnsSingleShopsData(this.$createElement, this)
+        this.timeSelect = `${this.searchForm.dateTime[0]}~${this.searchForm.dateTime[1]}`
+        this.tipDataName = '趋势数据'
+      }
+    },
     // 下载报表
     downTable () {
       const dataTypeArr = []
@@ -234,10 +201,6 @@ export default {
         shop: this.searchForm.shop,
         dataType: dataTypeArr.join() || ''
       })
-      if (downForm.timeType === 7) {
-        downForm.startDate = monthSpliceDay(downForm.startDate)[0]
-        downForm.endDate = monthSpliceDay(downForm.endDate)[1]
-      }
       const src = `${process.env.VUE_APP_API}/export?timeType=${downForm.timeType}&startDate=${downForm.startDate}&endDate=${downForm.endDate}&shop=${downForm.shop}&dataType=${downForm.dataType}&trackId=${this.$store.state.trackId || ''}&permissionsCode=${this.$store.state.permissionsCode || ''}&user=${this.userData.staffId || ''}`
       location.href = src
     }
