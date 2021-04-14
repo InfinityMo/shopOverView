@@ -1,0 +1,98 @@
+html,
+body {
+  position: relative;
+  // height: 100%;
+}
+
+#app {
+  position: relative;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.router-view {
+  position: relative;
+  top: 60px;
+  height: calc(100vh - 60px);
+  padding: 0 16px 20px 16px;
+  box-sizing: border-box;
+}
+
+.el-loading-spinner {
+  position: fixed;
+  top: calc(100vh/2);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-item-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-between-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-top-icon {
+  display: block;
+  width: 16px;
+  height: 18px;
+}
+
+.standard-table.el-table {
+  thead {
+    color: #333;
+
+    // th {
+    //   padding: 10px 0;
+    // }
+  }
+
+  th {
+    // text-align: left;
+    font-weight: normal;
+    background-color: #fafafa;
+  }
+
+  // td {
+  //   padding: 13px 0;
+  //   // text-align: center;
+
+  //   div {
+  //     overflow: hidden;
+  //     white-space: nowrap;
+  //     text-overflow: ellipsis;
+  //   }
+  // }
+
+}
+
+.column-title-rate {
+  margin-left: 16px;
+}
+
+.column-rate {
+  display: inline-block;
+  width: 50px;
+  margin-left: 23px;
+}

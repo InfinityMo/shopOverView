@@ -1,0 +1,93 @@
+.head {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2501;
+
+  .head-content {
+    height: 100%;
+    padding: 0 36px;
+
+    h4 {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .user {
+      .tabs-wrap {
+        margin-right: 45px;
+
+        /deep/.el-tabs__header {
+          margin: 0;
+
+          .el-tabs__nav-wrap::after {
+            height: 0;
+            background: none;
+          }
+        }
+
+        /deep/.el-tabs__item {
+          padding: 0 5px;
+          height: 50px;
+          line-height: 50px;
+          color: #333;
+
+          span {
+            padding: 0 17px;
+          }
+        }
+
+        /deep/.el-tabs__item.is-active {
+          color: #2BB8BD;
+        }
+
+        /deep/.el-tabs__active-bar {
+          height: 4px;
+        }
+      }
+
+      .more-operate {
+        margin-right: 50px;
+
+        .el-dropdown-link {
+          cursor: pointer;
+        }
+      }
+
+      .journal {
+        margin-right: 30px;
+        font-size: 14px;
+        color: #1890ff;
+        cursor: pointer;
+      }
+
+      .user-info {
+        div {
+          width: 36px;
+          height: 36px;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+          }
+        }
+
+        p {
+          font-size: 14px;
+          margin-left: 10px;
+          color: #333;
+        }
+      }
+
+      .user-info:hover {
+        cursor: pointer;
+      }
+    }
+
+  }
+}
