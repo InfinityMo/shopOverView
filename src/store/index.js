@@ -94,7 +94,7 @@ export default new Vuex.Store({
               staffId: data.userName
             }))
             commit('SAVEPERMISSIONSCODE', data.permissionsCode)
-            commit('SAVEUSERPOWER', data.permissions)
+            // commit('SAVEUSERPOWER', data.permissions)
             resolve(true)
           } else if (res.errorCode === 1000) {
             Message.warning('用户名或密码有误，请核对用户名或密码')

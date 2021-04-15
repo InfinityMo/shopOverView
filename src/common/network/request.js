@@ -59,6 +59,7 @@ const removePending = (config) => {
 // 添加请求拦截器
 instance.interceptors.request.use(
   config => {
+    // responseType: 'blob' 前端下载时开启blob
     config.cancelToken = source.token // 全局添加cancelToken
     if (!config.data) config.data = {}
     config.data.userName = 'TL-1376'

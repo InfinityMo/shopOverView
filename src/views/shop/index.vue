@@ -103,9 +103,9 @@ export default {
   data () {
     return {
       searchForm: JSON.parse(JSON.stringify(searchForm)),
+      downForm: {},
       shopOption: [],
       columns: [],
-      // columnAllShop: columnsSingleShopsData(this.$createElement, this),
       tableData: [],
       shopName: '',
       timeSelect: '',
@@ -119,9 +119,6 @@ export default {
 
   },
   created () {
-    //
-    // this.searchForm.shopid = '-1'
-    // this.searchForm.date = getYesterday()
     this.getSelectData().then(res => {
       if (res) {
         this.searchForm.shopid = '-1'
@@ -185,6 +182,7 @@ export default {
     },
     getTable () {
       this.searchForm.shopid === '-1' ? this.getAllShopTable() : this.getSingleShopTable()
+      this.downForm = { ...this.searchForm }
     },
     getAllShopTable () {
       this.$request.post('/shopinfo/getsummary', { dataDate: this.searchForm.date }).then(res => {
@@ -207,15 +205,31 @@ export default {
     },
     // 下载报表
     downTable () {
-      const downForm = Object.assign({}, {
-        shopid: this.searchForm.shopid,
-        startDate: this.searchForm.shopid === '-1' ? this.searchForm.date || '' : this.searchForm.dateTime[0] || '',
-        endDate: this.searchForm.shopid === '-1' ? this.searchForm.date || '' : this.searchForm.dateTime[1] || ''
+      const downLoadForm = Object.assign({}, {
+        shopid: this.downForm.shopid,
+        startDate: this.downForm.shopid === '-1' ? this.downForm.date || '' : this.downForm.dateTime[0] || '',
+        endDate: this.downForm.shopid === '-1' ? this.downForm.date || '' : this.downForm.dateTime[1] || ''
       })
-      const src = `${process.env.VUE_APP_API}/export?shopid=${downForm.timeType}&startDate=${downForm.startDate}&endDate=${downForm.endDate}&trackId=${this.$store.state.trackId || ''}&permissions=${this.$store.state.permissionsCode || ''}&userName=${this.userData.staffId || ''}`
+      const src = `${process.env.VUE_APP_API}/shopinfo/getExcel?shopid=${downLoadForm.shopid}&startDate=${downLoadForm.startDate}&endDate=${downLoadForm.endDate}&trackId=${this.$store.state.trackId || '8e635833d44e4b889be51ebdaf7e85b466e341790657ea6da4f8dd924c9d50c60786afe9941bf60467598508291c488eb728cc15610f16f012059cf7e036'}&permissions=${this.$store.state.permissionsCode || 'dGwxMjM0NTY='}&userName=${this.userData.staffId || 'TL-1376'}`
       location.href = src
+      // this.$request.post('/shopinfo/getExcel', downLoadForm).then(res => {
+      //   this.createExcel(res, 'test.xlsx')
+      // })
+    },
+    rundNun (num) {
+      debugger
     }
-
+    // createExcel (content, filename) {
+    //   const eleLink = document.createElement('a')
+    //   eleLink.download = filename
+    //   eleLink.style.display = 'none'
+    //   const blob = new Blob([content])
+    //   eleLink.href = URL.createObjectURL(blob)
+    //   document.body.appendChild(eleLink)
+    //   eleLink.click()
+    //   URL.revokeObjectURL(eleLink.href)// 释放URL 对象
+    //   document.body.removeChild(eleLink)
+    // }
   }
 }
 </script>

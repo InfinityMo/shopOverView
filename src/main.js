@@ -17,10 +17,6 @@ import axios from './common/network/request'
 import '@/common/commonData/gobalComponents'
 import debounce from '@/common/utils/debounce'
 
-// vxe-table
-// import 'xe-utils'
-// import VXETable from 'vxe-table'
-// import 'vxe-table/lib/style.css'
 import '@/common/styles/common.less'
 // 挂载请求
 Vue.prototype.$request = axios
