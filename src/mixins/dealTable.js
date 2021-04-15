@@ -1,5 +1,4 @@
 import { getLastSevenDay, getLastThirtyDay, prevWeek, prevYear, recentYear, monthSpliceDay } from '../common/utils/timeCalc'
-import { createUUID } from '../common/utils/funcStore'
 const mixins = {
   data () {
     return {
@@ -24,7 +23,7 @@ const mixins = {
             let maxTime = this.pickerMinDate + thirtyDay
             const minTime = this.pickerMinDate - thirtyDay
             if (maxTime > new Date()) {
-              maxTime = new Date()
+              maxTime = new Date().getTime() - 1 * 24 * 3600 * 1000
             }
             return time.getTime() > maxTime || time.getTime() < minTime
           }
@@ -83,15 +82,6 @@ const mixins = {
     }
 
   },
-  watch: {
-    'timeSection' (newVal, oldVal) {
-      // 清除时，重置月度范围选择控件
-      if (this.searchForm.timeType === 7 && !newVal) {
-        this.monthRangeRadomLey = createUUID()
-        this.pickerRangeMonth = ''
-      }
-    }
-  },
   methods: {
     getLastMonth () { // 获取上个月日期 格式 2020-12
       const date = new Date()
@@ -107,7 +97,7 @@ const mixins = {
     _getSelectData (type) {
       const option = []
       return new Promise((resolve, reject) => {
-        this.$request.post('/dropdownlist', { type: type }).then(res => {
+        this.$request.post('/shopinfo/getAllShopInfo').then(res => {
           if (res) {
             const dropData = res.data || []
             dropData.map((i) => {

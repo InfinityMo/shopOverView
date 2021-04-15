@@ -104,7 +104,7 @@ export const columnsAllShopsData = (h, $this) => [{
 }
 ]
 export const columnsSingleShopsData = (h, $this) => [{
-  dataKey: 'shopName',
+  dataKey: 'date',
   title: '日期',
   fixed: 'left',
   align: 'left',

@@ -5,8 +5,8 @@
         <h4>店铺信息总览</h4>
         <!-- 用户信息 -->
         <div class="flex-item-center user">
-          <p class="journal"
-             @click="viewJournal">查看操作日志</p>
+          <!-- <p class="journal"
+             @click="viewJournal">查看操作日志</p> -->
           <el-popover placement="bottom"
                       trigger="click"
                       popper-class="user-popover">
