@@ -215,9 +215,6 @@ export default {
       // this.$request.post('/shopinfo/getExcel', downLoadForm).then(res => {
       //   this.createExcel(res, 'test.xlsx')
       // })
-    },
-    rundNun (num) {
-      debugger
     }
     // createExcel (content, filename) {
     //   const eleLink = document.createElement('a')
